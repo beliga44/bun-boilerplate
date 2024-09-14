@@ -1,21 +1,29 @@
 {
-  "name": "bun-todo",
-  "version": "1.0.50",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/index.ts"
-  },
-  "dependencies": {
-    "@elysiajs/cors": "^1.0.2",
-    "@elysiajs/jwt": "^1.0.2",
-    "@types/mongoose": "^5.11.97",
-    "elysia": "^1.0.23",
-    "jose": "^5.4.0",
-    "jsonwebtoken": "9.0.2",
-    "mongoose": "^8.0.3"
-  },
-  "devDependencies": {
-    "bun-types": "latest"
-  },
-  "module": "src/index.js"
+    "name": "bun-todo",
+    "version": "1.0.50",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "bun run --watch src/index.ts",
+        "format": "prettier --write .",
+        "lint": "eslint . ",
+        "lint:fix": "eslint . --fix "
+    },
+    "dependencies": {
+        "@elysiajs/cors": "^1.0.2",
+        "@elysiajs/jwt": "^1.0.2",
+        "@types/mongoose": "^5.11.97",
+        "elysia": "^1.0.23",
+        "jose": "^5.4.0",
+        "jsonwebtoken": "9.0.2",
+        "mongoose": "^8.0.3"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.10.0",
+        "bun-types": "latest",
+        "eslint": "^9.10.0",
+        "globals": "^15.9.0",
+        "prettier": "^3.3.3",
+        "typescript-eslint": "^8.5.0"
+    },
+    "module": "src/index.js"
 }

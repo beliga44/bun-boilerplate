@@ -1,29 +1,29 @@
-import Elysia from "elysia";
-import appConfig from "./commons/config/app.config";
-import module from "./modules/modules";
-import * as mongoose from "mongoose";
+import Elysia from 'elysia'
+import appConfig from './commons/config/app.config'
+import module from './modules/modules'
+import * as mongoose from 'mongoose'
 import { cors } from '@elysiajs/cors'
 
-let connection = null;
+let connection = null
 
 try {
-    connection = await mongoose.connect(appConfig.MONGODB_URL);
+    connection = await mongoose.connect(appConfig.MONGODB_URL)
 } catch (e) {
-    console.log(e);
+    console.log(e)
 }
 
 const app = new Elysia()
     .use(cors())
     .use(module)
-    .get("/", () => "Hello Elysia")
-    .listen(appConfig.PORT);
+    .get('/', () => 'Hello Elysia')
+    .listen(appConfig.PORT)
 
 console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
-);
+    `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
+)
 
-process.on("SIGINT", async () => {
-    await connection.disconnect();
-    console.log('EXIT');
-    process.exit(0);
-});
+process.on('SIGINT', async () => {
+    await connection.disconnect()
+    console.log('EXIT')
+    process.exit(0)
+})
