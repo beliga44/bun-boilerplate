@@ -1,4 +1,4 @@
-import { Model, Schema, model, Types } from 'mongoose'
+import { Model, Schema, model, Types } from 'mongoose';
 
 export interface Todo extends Document {
     _id: Types.ObjectId
@@ -15,6 +15,6 @@ const todoSchema = new Schema<Todo>({
         type: String,
         required: false
     }
-})
+});
 
-export const TodoModel: Model<Todo> = model('todo', todoSchema)
+export const TodoModel: Model<Todo> = model('todo', todoSchema);
