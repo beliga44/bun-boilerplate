@@ -1,3 +1,3 @@
-import { CreateDto } from './create.dto'
+import { CreateDto } from './create.dto';
 
 export class UpdateDto extends CreateDto {}

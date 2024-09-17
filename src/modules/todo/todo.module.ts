@@ -1,10 +1,10 @@
-import Elysia from 'elysia'
-import { TodoHandler } from './todo.handler'
-import createDtoValidation from './validation/create-dto.validation'
-import { TodoService } from './todo.service'
-import { JwtAuth } from '../../commons/provider/jwtAuth'
-import HttpException from '../../commons/dto/http-exception'
-import { createTodoValidationJoi } from './validation/create-dto.validation.joi'
+import Elysia from 'elysia';
+import { TodoHandler } from './todo.handler';
+import createDtoValidation from './validation/create-dto.validation';
+import { TodoService } from './todo.service';
+import { JwtAuth } from '../../commons/provider/jwtAuth';
+import HttpException from '../../commons/dto/http-exception';
+import { createTodoValidationJoi } from './validation/create-dto.validation.joi';
 
 export default new Elysia({ prefix: '/todos' })
     .onBeforeHandle(async (context) => await new JwtAuth().verify(context))
@@ -26,10 +26,10 @@ export default new Elysia({ prefix: '/todos' })
                     {
                         abortEarly: false
                     }
-                )
+                );
                 if (error?.message) {
-                    throw new HttpException(error.message, 400)
+                    throw new HttpException(error.message, 400);
                 }
             }
         }
-    )
+    );

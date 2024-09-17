@@ -1,4 +1,4 @@
-import { t } from 'elysia'
+import { t } from 'elysia';
 
 export default t.Object({
     name: t.String({
@@ -9,4 +9,4 @@ export default t.Object({
         minLength: 3,
         error: 'Description is required'
     })
-})
+});

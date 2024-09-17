@@ -1,11 +1,11 @@
-import Elysia from 'elysia'
-import { JwtAuth } from '../../commons/provider/jwtAuth'
-import { queryParamTransform } from '../../commons/provider/query-params-transform'
-import { bodyValidationHandler } from '../../commons/provider/body-validation-handler'
-import { AuthService } from './auth.service'
-import { AuthHandler } from './auth.handler'
-import { loginValidationJoi } from './validation/login-dto.validation'
-import { AuthDerive } from './auth.derive'
+import Elysia from 'elysia';
+import { JwtAuth } from '../../commons/provider/jwtAuth';
+import { queryParamTransform } from '../../commons/provider/query-params-transform';
+import { bodyValidationHandler } from '../../commons/provider/body-validation-handler';
+import { AuthService } from './auth.service';
+import { AuthHandler } from './auth.handler';
+import { loginValidationJoi } from './validation/login-dto.validation';
+import { AuthDerive } from './auth.derive';
 
 export default new Elysia({ prefix: '/auth' })
     .decorate({
@@ -17,7 +17,7 @@ export default new Elysia({ prefix: '/auth' })
             authHandler.login(body),
         {
             beforeHandle({ body }) {
-                bodyValidationHandler(body, loginValidationJoi)
+                bodyValidationHandler(body, loginValidationJoi);
             }
         }
     )
@@ -28,4 +28,4 @@ export default new Elysia({ prefix: '/auth' })
         {
             transform: queryParamTransform
         }
-    )
+    );

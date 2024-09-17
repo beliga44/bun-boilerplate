@@ -1,11 +1,11 @@
-import Elysia from 'elysia'
-import { UserHandler } from './user.handler'
-import { createUserValidationJoi } from './validation/create-dto.validation'
-import { UserService } from './user.service'
-import { queryParamTransform } from '../../commons/provider/query-params-transform'
-import { bodyValidationHandler } from '../../commons/provider/body-validation-handler'
-import { updateUserValidationJoi } from './validation/update-dto.validation'
-import { AuthDerive } from '../auth/auth.derive'
+import Elysia from 'elysia';
+import { UserHandler } from './user.handler';
+import { createUserValidationJoi } from './validation/create-dto.validation';
+import { UserService } from './user.service';
+import { queryParamTransform } from '../../commons/provider/query-params-transform';
+import { bodyValidationHandler } from '../../commons/provider/body-validation-handler';
+import { updateUserValidationJoi } from './validation/update-dto.validation';
+import { AuthDerive } from '../auth/auth.derive';
 
 export default new Elysia({ prefix: '/users' })
     .use(AuthDerive.authenticateJwt)
@@ -31,7 +31,7 @@ export default new Elysia({ prefix: '/users' })
             userHandler.createUser(body),
         {
             beforeHandle({ body }) {
-                bodyValidationHandler(body, createUserValidationJoi)
+                bodyValidationHandler(body, createUserValidationJoi);
             }
         }
     )
@@ -41,7 +41,7 @@ export default new Elysia({ prefix: '/users' })
             userHandler.updateUser(id, body),
         {
             beforeHandle({ body }) {
-                bodyValidationHandler(body, updateUserValidationJoi)
+                bodyValidationHandler(body, updateUserValidationJoi);
             }
         }
-    )
+    );

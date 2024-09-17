@@ -1,6 +1,6 @@
-import { DataSource } from 'typeorm'
-import { User } from '../../modules/user/user.entity'
-import postgresConfig from '../config/postgres.config'
+import { DataSource } from 'typeorm';
+import { User } from '../../modules/user/user.entity';
+import postgresConfig from '../config/postgres.config';
 
 export const AppDataSource = new DataSource({
     type: 'postgres',
@@ -12,4 +12,4 @@ export const AppDataSource = new DataSource({
     entities: [User],
     synchronize: true,
     logging: false
-})
+});
