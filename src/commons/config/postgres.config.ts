@@ -4,4 +4,4 @@ export default {
     PG_USERNAME: process.env.PG_USERNAME || 'macbook',
     PG_PASSWORD: process.env.PG_PASSWORD || '',
     PG_DATABASE: process.env.PG_DATABASE || 'postgres'
-};
+}

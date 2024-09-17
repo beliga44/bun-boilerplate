@@ -15,13 +15,13 @@ export class UtilsService {
         options?: Record<string, any>
     ): T | T[] {
         if (Array.isArray(entity)) {
-            return entity.map((u) => new model(u, options));
+            return entity.map((u) => new model(u, options))
         }
 
-        return new model(entity, options);
+        return new model(entity, options)
     }
 
     public static transform<T extends object>(t: any): T {
-        return Object.assign({}, t) as T;
+        return Object.assign({}, t) as T
     }
 }
