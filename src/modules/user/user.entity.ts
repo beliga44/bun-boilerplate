@@ -1,12 +1,16 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { UserRole } from '../../commons/enum/role.enum';
 
-@Entity()
+@Entity({
+    name: 'users'
+})
 export class User {
     @PrimaryGeneratedColumn('uuid')
     id: number;
 
-    @Column()
+    @Column({
+        unique: true
+    })
     email: string;
 
     @Column()
