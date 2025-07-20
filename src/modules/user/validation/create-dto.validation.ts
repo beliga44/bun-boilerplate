@@ -4,7 +4,11 @@ import { UserRole } from '../../../commons/enum/role.enum';
 export const createUserValidationJoi = Joi.object({
     email: Joi.string().email().required(),
 
+    name: Joi.string().optional(),
+
     password: Joi.string().required(),
 
-    role: Joi.string().valid(Object.values(UserRole).join(',')).optional()
+    role: Joi.string()
+        .valid(...Object.values(UserRole))
+        .optional()
 });

@@ -4,15 +4,19 @@ import HttpException from '../dto/http-exception';
 import Elysia from 'elysia';
 
 export class JwtAuth {
-    async verify({ headers }: Elysia): Promise<void> {
+    async verify({ headers }: Elysia): Promise<Object> {
         const auth: string = headers['authorization'];
         const token: string | null = auth?.startsWith('Bearer ')
             ? auth.slice(7)
             : null;
 
-        const user = new Promise((resolve, reject) => {
+        if (!token) {
+            throw new HttpException('Unauthorized', 401);
+        }
+
+        const user: Promise<Object> = new Promise((resolve, reject) => {
             jwt.verify(token, appConfig.JWT_SECRET, (err, user) => {
-                if (err) {
+                if (err || !user) {
                     throw new HttpException('Unauthorized', 401);
                 }
 
@@ -24,23 +28,28 @@ export class JwtAuth {
     }
 
     async sign(body: any): Promise<string> {
-        const token = new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             jwt.sign(
                 {
                     data: body,
                     exp: Math.floor(Date.now() / 1000) + 12 * 60 * 60 // 12 Hours expired
                 },
                 appConfig.JWT_SECRET,
-                (err, token) => {
+                (err: Error | null, token: string | undefined) => {
                     if (err) {
                         throw new HttpException(err.message, 500);
+                    }
+
+                    if (!token) {
+                        throw new HttpException(
+                            'Error generating JWT token',
+                            500
+                        );
                     }
 
                     resolve(token);
                 }
             );
         });
-
-        return await token;
     }
 }

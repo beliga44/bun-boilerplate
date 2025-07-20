@@ -3,12 +3,12 @@ export class UtilsService {
         model: new (entity: E, options?: any) => T,
         entity: E,
         options?: Record<string, any>
-    ): T
+    ): T;
     public static toDto<T, E>(
         model: new (entity: E, options?: any) => T,
         entity: E[],
         options?: Record<string, any>
-    ): T[]
+    ): T[];
     public static toDto<T, E>(
         model: new (entity: E, options?: any) => T,
         entity: E | E[],
@@ -23,5 +23,9 @@ export class UtilsService {
 
     public static transform<T extends object>(t: any): T {
         return Object.assign({}, t) as T;
+    }
+
+    public static dateTimeToDateString(date: Date): string {
+        return `${date.getFullYear()}-${date.getMonth() + 1}-${String(date.getDate().toString()).padStart(2, '0')}`;
     }
 }

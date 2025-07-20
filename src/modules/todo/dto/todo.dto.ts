@@ -1,13 +1,17 @@
+import { AbstractDto } from '../../../commons/abstract.dto';
 import { Todo } from '../todo.entity';
+import { UserDto } from '../../user/dto/user.dto';
+import { UtilsService } from '../../../commons/utils.service';
 
-export class TodoDto {
+export class TodoDto extends AbstractDto {
     id: string;
     name: string;
-    description: string;
+    user: UserDto | null;
 
     constructor(t: Todo) {
-        this.id = t._id.toString();
+        super(t);
+        this.id = t.id.toString();
         this.name = t.name;
-        this.description = t.description;
+        this.user = t.user && UtilsService.toDto(UserDto, t.user);
     }
 }

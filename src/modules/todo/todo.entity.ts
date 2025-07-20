@@ -1,20 +1,19 @@
-import { Model, Schema, model, Types } from 'mongoose';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { AbstractEntity } from '../../commons/abstract.entity';
+import { User } from '../user/user.entity';
 
-export interface Todo extends Document {
-    _id: Types.ObjectId
-    name: string
-    description: string
+type UserEntity = User
+
+@Entity({
+    name: 'todos'
+})
+export class Todo extends AbstractEntity {
+    @PrimaryGeneratedColumn('uuid')
+    id: number;
+
+    @Column()
+    name: string;
+
+    @ManyToOne(() => User, (user) => user.todos)
+    user: UserEntity;
 }
-
-const todoSchema = new Schema<Todo>({
-    name: {
-        type: String,
-        required: true
-    },
-    description: {
-        type: String,
-        required: false
-    }
-});
-
-export const TodoModel: Model<Todo> = model('todo', todoSchema);

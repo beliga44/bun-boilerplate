@@ -1,12 +1,7 @@
-import { t } from 'elysia';
+import Joi from 'joi';
 
-export default t.Object({
-    name: t.String({
-        minLength: 3,
-        error: 'Name is required'
-    }),
-    description: t.String({
-        minLength: 3,
-        error: 'Description is required'
-    })
+export const createTodoValidationJoi = Joi.object({
+    id: Joi.string().guid().optional(),
+
+    name: Joi.string().required()
 });

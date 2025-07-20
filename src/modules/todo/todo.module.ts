@@ -1,35 +1,88 @@
 import Elysia from 'elysia';
 import { TodoHandler } from './todo.handler';
-import createDtoValidation from './validation/create-dto.validation';
+import { createTodoValidationJoi } from './validation/create-dto.validation';
 import { TodoService } from './todo.service';
-import { JwtAuth } from '../../commons/provider/jwtAuth';
-import HttpException from '../../commons/dto/http-exception';
-import { createTodoValidationJoi } from './validation/create-dto.validation.joi';
+import { queryParamTransform } from '../../commons/provider/query-params-transform';
+import { bodyValidationHandler } from '../../commons/provider/body-validation-handler';
+import { updateTodoValidationJoi } from './validation/update-dto.validation';
+import { AuthDerive } from '../auth/auth.derive';
+import { UpdateTodoWorker } from './queue-job/update-todo.worker';
+import redisConfig from '../../commons/config/redis.config';
+import { container } from '../container';
+import { QueueJobName } from '../../commons/enum/queue-job-name';
+import Joi from 'joi';
+
+const todoService = container.resolve(TodoService);
 
 export default new Elysia({ prefix: '/todos' })
-    .onBeforeHandle(async (context) => await new JwtAuth().verify(context))
+    .use(AuthDerive.authenticateJwtOrApiKey)
     .decorate({
-        Handler: new TodoHandler(new TodoService())
+        todoHandler: new TodoHandler(todoService),
+        updateTodoWorker: new UpdateTodoWorker(
+            QueueJobName.UPDATE_TODO.toString(),
+            {
+                host: redisConfig.REDIS_HOST,
+                port: redisConfig.REDIS_PORT
+            },
+            todoService
+        )
     })
-    .get('/', ({ Handler }: { Handler: TodoHandler }) => Handler.getTodos())
-    .get('/:id', ({ Handler, params: { id } }: { Handler: TodoHandler }) =>
-        Handler.getTodoById(id)
+    .get(
+        '/',
+        ({ todoHandler, query }: { todoHandler: TodoHandler }) =>
+            todoHandler.getTodos(query),
+        {
+            transform: queryParamTransform
+        }
+    )
+    .get(
+        '/:id',
+        ({ todoHandler, params: { id } }: { todoHandler: TodoHandler }) =>
+            todoHandler.getTodoById(id),
+        {
+            beforeHandle({ params }) {
+                bodyValidationHandler(
+                    params,
+                    Joi.object({
+                        id: Joi.string().guid().required()
+                    })
+                );
+            }
+        }
     )
     .post(
         '/',
-        ({ Handler, body }: { Handler: TodoHandler }) =>
-            Handler.createTodo(body),
+        ({ todoHandler, body, user }: { todoHandler: TodoHandler }) =>
+            todoHandler.createTodo(body, user),
         {
             beforeHandle({ body }) {
-                const { value, error } = createTodoValidationJoi.validate(
-                    body,
-                    {
-                        abortEarly: false
-                    }
+                bodyValidationHandler(body, createTodoValidationJoi);
+            }
+        }
+    )
+    .put(
+        '/:id',
+        ({ todoHandler, params: { id }, body }: { todoHandler: TodoHandler }) =>
+            todoHandler.updateTodo(id, body),
+        {
+            beforeHandle({ body, params }) {
+                const merge = { ...body, ...params };
+                bodyValidationHandler(merge, updateTodoValidationJoi);
+            }
+        }
+    )
+    .delete(
+        '/:id',
+        ({ todoHandler, params: { id } }: { todoHandler: TodoHandler }) =>
+            todoHandler.deleteTodo(id),
+        {
+            beforeHandle({ params }) {
+                bodyValidationHandler(
+                    params,
+                    Joi.object({
+                        id: Joi.string().guid().required()
+                    })
                 );
-                if (error?.message) {
-                    throw new HttpException(error.message, 400);
-                }
             }
         }
     );

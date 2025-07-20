@@ -1,3 +1,4 @@
+import { container } from '../container';
 import Elysia from 'elysia';
 import { UserHandler } from './user.handler';
 import { createUserValidationJoi } from './validation/create-dto.validation';
@@ -10,7 +11,7 @@ import { AuthDerive } from '../auth/auth.derive';
 export default new Elysia({ prefix: '/users' })
     .use(AuthDerive.authenticateJwt)
     .decorate({
-        userHandler: new UserHandler(new UserService())
+        userHandler: new UserHandler(container.resolve(UserService))
     })
     .get(
         '/',
@@ -44,4 +45,9 @@ export default new Elysia({ prefix: '/users' })
                 bodyValidationHandler(body, updateUserValidationJoi);
             }
         }
+    )
+    .delete(
+        '/:id',
+        ({ userHandler, params: { id } }: { userHandler: UserHandler }) =>
+            userHandler.deleteUser(id)
     );

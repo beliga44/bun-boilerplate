@@ -1,8 +1,8 @@
 import Elysia from 'elysia';
-import TodoModule from './todo/todo.module';
 import { ResponseDto } from '../commons/dto/response.dto';
 import UserModule from './user/user.module';
 import AuthModule from './auth/auth.module';
+import TodoModule from './todo/todo.module';
 
 export default new Elysia()
     .onAfterHandle((response) => {
@@ -28,6 +28,9 @@ export default new Elysia()
             status: set?.status || 500
         };
     })
-    .use(TodoModule)
+    .onTransform(function log({ body, params, path, request: { method } }) {
+        console.log(`${new Date()} ${method} ${path}`, { params });
+    })
     .use(UserModule)
-    .use(AuthModule);
+    .use(AuthModule)
+    .use(TodoModule);

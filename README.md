@@ -1,19 +1,19 @@
-# Elysia with Bun runtime
+# Bun Elysia Boilerplate
 
-## Getting Started
+A modern API service built with Elysia framework and Bun runtime, featuring user authentication,
+todo management, and more.
 
-To get started with this template, simply paste this command into your terminal:
+## Features
 
-```bash
-bun create elysia ./elysia-example
-```
+- 🚀 High-performance Bun runtime
+- 🔐 User authentication system
+- ✅ Todo management
+- 🔄 Request transformation and validation
+- 🛠️ Error handling middleware
+- 📝 Structured API responses
+- 📦 Dependency injection for services
 
-## Development
+## Scripts
 
-To start the development server run:
+- `npm run dev` - Start development server
 
-```bash
-bun run dev
-```
-
-Open http://localhost:3000/ with your browser to see the result.
